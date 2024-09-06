@@ -42,7 +42,7 @@ export default function LandingPage() {
 
   const fadeInUp = {
     initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 }
+    animate: { opacity: 1, y: 0 },
   }
 
   const stagger = {
@@ -115,7 +115,7 @@ export default function LandingPage() {
         )}
       </AnimatePresence>
       <main className="flex-1 pt-16">
-        <section className="min-h-screen flex items-center justify-center bg-gradient-to-b from-green-50 to-white">
+        <section className="flex items-center justify-center bg-gradient-to-b from-green-50 to-white min-h-[50vh] sm:min-h-[60vh] md:min-h-[70vh] lg:min-h-screen">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center space-y-4 text-center">
               <motion.div
@@ -312,7 +312,7 @@ export default function LandingPage() {
               viewport={{ once: true }}
             >
               {[
-                { name: "Dr. Sarah Johnson", role: "Functional Medicine Practitioner", bio: "Dr. Johnson has over 15 years of experience in functional medicine and is passionate about helping patients achieve optimal health." },
+                { name: "Dr. Adams Jeffrey Blanco", role: "Functional Medicine Practitioner", bio: "Dr. Blanco has over 10 years of experience in functional medicine and is passionate about helping patients achieve optimal health." },
                 { name: "Lisa Chen", role: "Nutritionist", bio: "Lisa specializes in creating personalized nutrition plans that support overall health and wellness." },
                 { name: "Michael Brown", role: "Health Coach", bio: "Michael works closely with patients to implement lifestyle changes and achieve their health goals." },
               ].map((member, index) => (
