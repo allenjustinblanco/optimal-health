@@ -4,12 +4,13 @@ import { useState, useRef, FormEvent } from 'react'
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { LeafIcon, HeartIcon, BrainIcon, ShieldIcon, ChevronDownIcon, XIcon, CheckIcon, UserIcon } from "lucide-react"
+import { LeafIcon, HeartIcon, BrainIcon, ShieldIcon, ChevronDownIcon, XIcon, CheckIcon, UserIcon, MenuIcon } from "lucide-react"
 import Link from "next/link"
 import { AnimatePresence, motion } from "framer-motion"
 
 export default function LandingPage() {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
@@ -24,6 +25,7 @@ export default function LandingPage() {
 
   const scrollToSection = (ref: React.RefObject<HTMLElement>) => {
     ref.current?.scrollIntoView({ behavior: 'smooth' })
+    setIsMobileMenuOpen(false)
   }
 
   const handleConsultationSubmit = (e: FormEvent) => {
@@ -39,13 +41,21 @@ export default function LandingPage() {
   }
 
   const fadeInUp = {
-    initial: { opacity: 0, y: 60 },
-    animate: { opacity: 1, y: 0 },
-  };
+    initial: { opacity: 0, y: 20 },
+    animate: { opacity: 1, y: 0 }
+  }
 
   const stagger = {
     animate: { transition: { staggerChildren: 0.1 } }
   }
+
+  const navItems = [
+    { name: "About", ref: aboutRef },
+    { name: "Services", ref: servicesRef },
+    { name: "Why Us", ref: whyUsRef },
+    { name: "FAQ", ref: faqRef },
+    { name: "Team", ref: teamRef },
+  ]
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
@@ -62,18 +72,12 @@ export default function LandingPage() {
           </motion.span>
         </Link>
         <motion.nav 
-          className="ml-auto flex gap-4 sm:gap-6"
+          className="hidden md:flex ml-auto gap-4 sm:gap-6"
           variants={stagger}
           initial="initial"
           animate="animate"
         >
-          {[
-            { name: "About", ref: aboutRef },
-            { name: "Services", ref: servicesRef },
-            { name: "Why Us", ref: whyUsRef },
-            { name: "FAQ", ref: faqRef },
-            { name: "Team", ref: teamRef },
-          ].map((item) => (
+          {navItems.map((item) => (
             <motion.div key={item.name} variants={fadeInUp}>
               <button onClick={() => scrollToSection(item.ref)} className="text-sm font-medium text-gray-600 hover:text-green-600 transition-colors">
                 {item.name}
@@ -81,7 +85,35 @@ export default function LandingPage() {
             </motion.div>
           ))}
         </motion.nav>
+        <button
+          className="md:hidden ml-auto text-gray-600 hover:text-green-600 transition-colors"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+        >
+          <MenuIcon className="h-6 w-6" />
+        </button>
       </header>
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="md:hidden fixed top-16 left-0 right-0 bg-white shadow-md z-40"
+          >
+            <nav className="flex flex-col p-4">
+              {navItems.map((item) => (
+                <button
+                  key={item.name}
+                  onClick={() => scrollToSection(item.ref)}
+                  className="text-sm font-medium text-gray-600 hover:text-green-600 transition-colors py-2"
+                >
+                  {item.name}
+                </button>
+              ))}
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
       <main className="flex-1 pt-16">
         <section className="min-h-screen flex items-center justify-center bg-gradient-to-b from-green-50 to-white">
           <div className="container px-4 md:px-6">
@@ -280,7 +312,7 @@ export default function LandingPage() {
               viewport={{ once: true }}
             >
               {[
-                { name: "Dr. Adams Jeffrey Blanco", role: "Functional Medicine Practitioner", bio: "Dr. Johnson has over 10 years of experience in medicine and is passionate about helping patients achieve optimal health." },
+                { name: "Dr. Sarah Johnson", role: "Functional Medicine Practitioner", bio: "Dr. Johnson has over 15 years of experience in functional medicine and is passionate about helping patients achieve optimal health." },
                 { name: "Lisa Chen", role: "Nutritionist", bio: "Lisa specializes in creating personalized nutrition plans that support overall health and wellness." },
                 { name: "Michael Brown", role: "Health Coach", bio: "Michael works closely with patients to implement lifestyle changes and achieve their health goals." },
               ].map((member, index) => (
